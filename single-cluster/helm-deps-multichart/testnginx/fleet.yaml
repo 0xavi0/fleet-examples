@@ -7,12 +7,12 @@ namespace: fleet-helm-example
 # Custom helm options
 helm:
   # The release name to use. If empty a generated release name will be used
-  releaseName: guestbook
+  releaseName: testnginx
 
   # The directory of the chart in the repo.  Also any valid go-getter supported
   # URL can be used there is specify where to download the chart from.
   # If repo below is set this value if the chart name in the repo
-  chart: https://github.com/0xavi0/fleet-examples/raw/test-dependencies/single-cluster/multi-chart.tgz
+  chart: https://charts.bitnami.com/bitnami/nginx-15.9.3.tgz
 
   # An https to a valid Helm repository to download the chart from
   repo: ""
