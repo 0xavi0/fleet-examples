@@ -4,17 +4,17 @@ defaultNamespace: fleet-helm-grafana
 
 # The namespace this chart will be installed and restricted to,
 # if not specified the chart will be installed to "default"
-namespace: fleet-helm-grafana
+namespace: fleet-helm-redis
 
 # Custom helm options
 helm:
   # The release name to use. If empty a generated release name will be used
-  releaseName: testgrafana
+  releaseName: testredis
 
   # The directory of the chart in the repo.  Also any valid go-getter supported
   # URL can be used there is specify where to download the chart from.
   # If repo below is set this value if the chart name in the repo
-  chart: https://github.com/0xavi0/fleet-examples/raw/test-dependencies/test-charts/grafana-7.3.0.tgz
+  chart: https://github.com/0xavi0/fleet-examples/raw/test-dependencies/test-charts/redis-18.9.1.tgz
 
   # An https to a valid Helm repository to download the chart from
   repo: ""
