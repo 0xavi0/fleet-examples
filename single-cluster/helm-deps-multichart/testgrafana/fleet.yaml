@@ -1,5 +1,7 @@
 # This file and all contents in it are OPTIONAL.
 
+defaultNamespace: fleet-helm-grafana
+
 # The namespace this chart will be installed and restricted to,
 # if not specified the chart will be installed to "default"
 namespace: fleet-helm-grafana
