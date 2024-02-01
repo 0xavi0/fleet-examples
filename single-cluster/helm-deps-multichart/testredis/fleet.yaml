@@ -20,7 +20,7 @@ helm:
   # Used if repo is set to look up the version of the chart
   version: ""
 
-  dependencyUpdate: true
+  disableDependencyUpdate: true
 
   # Force recreate resource that can not be updated
   force: false
