@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: 0xavi0/nginx-git:0.0.0-40 # {"$imagescan": "test-scan"}
+        image: 0xavi0/nginx-git # {"$imagescan": "test-scan"}
         ports:
         - containerPort: 80
