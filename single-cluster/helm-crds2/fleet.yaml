@@ -31,4 +31,4 @@ helm:
   values:
     replicas: 2
 
-deleteCRDResources: false
+deleteCRDResources: true
