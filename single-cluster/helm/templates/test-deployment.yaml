@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: slowtest
+spec:
+  selector:
+    matchLabels:
+      app: slowtest
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: slowtest
+    spec:
+      containers:
+      - name: pause
+        image: k8s.gcr.io/pause
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+      initContainers:
+        - name: sleeper
+          image: busybox:1.28
+          command:
+          - sleep
+          - "120"
