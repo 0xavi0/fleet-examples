@@ -5,9 +5,9 @@ diff:
     name: rabbitmq-consumer
     operations:
     - {"op":"remove", "path":"/status/conditions"}
-ignore:
-  conditions:
-   - type: Active
-     status: "False"
-     reason: ScalerNotActive
+#ignore:
+#  conditions:
+#   - type: Active
+#     status: "False"
+#     reason: ScalerNotActive
 
