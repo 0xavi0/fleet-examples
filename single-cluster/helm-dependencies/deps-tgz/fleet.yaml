@@ -1,0 +1,8 @@
+namespace: fleet-deps-tgz
+
+helm:
+  releaseName: deps-tgz
+  chart: https://github.com/0xavi0/fleet-examples/raw/test-dependencies/test-charts/influxdb-5.13.5.tgz
+  repo: ""
+  version: ""
+

@@ -1,0 +1,9 @@
+namespace: fleet-no-deps-simple
+
+helm:
+  releaseName: no-deps-simple
+  chart: ""
+  repo: ""
+  version: ""
+  disableDependencyUpdate: true
+

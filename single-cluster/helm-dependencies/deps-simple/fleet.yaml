@@ -1,0 +1,8 @@
+namespace: fleet-deps-simple
+
+helm:
+  releaseName: deps-simple
+  chart: ""
+  repo: ""
+  version: ""
+
