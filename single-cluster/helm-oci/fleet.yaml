@@ -2,6 +2,6 @@ namespace: test-helm-version
 
 helm:
   releaseName: supertest
-  chart: "oci://registry-1.docker.io/bitnamicharts/nginx"
-  version: "17.0.1"
+  chart: "oci://registry-1.docker.io/bitnamicharts/postgresql"
+  version: "15.3.2"
 
