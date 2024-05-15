@@ -1,0 +1,7 @@
+namespace: test-helm-version
+
+helm:
+  releaseName: supertest
+  chart: "oci://registry-1.docker.io/bitnamicharts/nginx"
+  version: "17.0.1"
+
