@@ -1,0 +1,12 @@
+namespace: fleet-local
+
+helm:
+  releaseName: fleet-test-configmap
+  chart: "oci://zot.xavi.ngrok.dev/superchart"
+  repo: ""
+  version: "0.0.11-rc4_build3"
+  force: false
+  timeoutSeconds: 0
+  values:
+    replicas: 1
+ 
