@@ -1,0 +1,17 @@
+---
+defaultNamespace: fleet-poc
+
+helm:
+  releaseName: test-templating-doesntworks
+  repo: public.ecr.aws
+  chart: isops/raw-helm-chart
+  version: v0.0.1
+  values:
+    extraObjects:
+      - apiVersion: v1
+        data:
+          CLUSTER_NAME: test
+        kind: ConfigMap
+        metadata:
+          name: test-templating-doesntworks
+
