@@ -1,12 +1,7 @@
 namespace: fleet-local
-
 helm:
   releaseName: fleet-test-configmap
   chart: "oci://192.168.1.43:5000/superchart"
   repo: ""
   version: "1.0.0"
-  force: false
-  timeoutSeconds: 0
-  values:
-    replicas: 1 
 
