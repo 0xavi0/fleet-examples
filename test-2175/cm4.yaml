@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-4
+  namespace: default
+data:
+  test: "only this one should be deployed"
+
