@@ -1,0 +1,27 @@
+apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: {{ include
+        \"DotNetCoreDocker.fullname\" . }}\n  labels:\n{{ include \"DotNetCoreDocker.labels\"
+        . | indent 4 }}\nspec:\n  replicas: {{ .Values.replicaCount }}\n  selector:\n
+        \   matchLabels:\n      app.kubernetes.io/name: {{ include \"DotNetCoreDocker.name\"
+        . }}\n      app.kubernetes.io/instance: {{ .Release.Name }}\n  template:\n
+        \   metadata:\n      labels:\n        app.kubernetes.io/name: {{ include \"DotNetCoreDocker.name\"
+        . }}\n        app.kubernetes.io/instance: {{ .Release.Name }}\n    {{- if
+        .Values.appArmorEnabled }}\n      annotations:\n        container.apparmor.security.beta.kubernetes.io/{{
+        .Chart.Name }}: runtime/default\n    {{- end }}\n    spec:\n      automountServiceAccountToken:
+        true\n      securityContext:\n        runAsUser: 1000\n        runAsGroup:
+        1000\n        fsGroup: 1000\n      restartPolicy: Always   \n      containers:\n
+        \       - name: {{ .Chart.Name }}\n          image: \"{{ .Values.imageRegistry
+        }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}\"\n          imagePullPolicy:
+        {{ .Values.image.pullPolicy }}          \n          securityContext:\n            allowPrivilegeEscalation:
+        false\n            readOnlyRootFilesystem: true\n          {{- with .Values.livenessProbe
+        }}\n          livenessProbe:\n            {{- tpl . $ | nindent 12 }}\n          {{-
+        end }}\n          {{- with .Values.readinessProbe }}\n          readinessProbe:\n
+        \           {{- tpl . $ | nindent 12 }}\n          {{- end }}\n          resources:\n
+        \           {{- toYaml .Values.resources | nindent 12 }}\n          env:\n
+        \         - name: COMPlus_EnableDiagnostics\n            value: \"0\"\n          -
+        name: OperatorConfig__ReconcileLoopInterval\n            value: {{ .Values.env.reconcileLoopInterval
+        }}\n          - name: OperatorConfig__TargetApiUrl\n            value: {{
+        .Values.env.targetApiUrl }}\n          - name: Serilog__MinimumLevel__Default\n
+        \           value: {{ .Values.env.logging.default }}\n          - name: Serilog__MinimumLevel__Override__Microsoft\n
+        \           value: {{ .Values.env.logging.microsoft }}\n          - name:
+        Serilog__MinimumLevel__Override__System\n            value: {{ .Values.env.logging.system
+        }}
