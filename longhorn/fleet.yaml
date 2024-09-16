@@ -1,0 +1,12 @@
+defaultNamespace: longhorn-system
+helm:
+  chart: longhorn
+  repo: https://charts.rancher.io
+  releaseName: longhorn
+  #version: "100.1.1+up1.2.3"
+  version: "102.3.0+up1.5.1"
+  #version: "101.1.0+up1.3.2"
+  #version: 100.3.1+up1.4.1
+  #version: 100.2.3+up1.3.2
+dependsOn:
+- name: lhgitrepo-longhorn-crd
