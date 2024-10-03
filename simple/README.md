@@ -3,7 +3,7 @@
 This example will deploy the [Kubernetes sample guestbook](https://github.com/kubernetes/examples/tree/master/guestbook/) application.
 The app will be deployed into the `default` namespace.
 
-Test 10
+Test 11
 
 ```yaml
 kind: GitRepo
