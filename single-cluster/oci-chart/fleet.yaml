@@ -1,0 +1,11 @@
+namespace: fleet-helm-oci-with-auth-example
+
+helm:
+  releaseName: fleet-test-configmap-private
+  chart: "oci://oci://registry-1.docker.io/0xavi0/sleeper-chart"
+  repo: ""
+  version: "0.1.0"
+  force: false
+  timeoutSeconds: 0
+  values:
+    replicas: 2
