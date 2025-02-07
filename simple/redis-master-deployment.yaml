@@ -25,3 +25,8 @@ spec:
             memory: 100Mi
         ports:
         - containerPort: 6379
+      tolerations:
+      - key: "key1"
+        operator: "Equal"
+        value: "value"
+        effect: "NoSchedule"
