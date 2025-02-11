@@ -1,8 +1,8 @@
-namespace: test-helmops
+namespace: test-gitrepo
 
 helm:
   releaseName: mosquitto
   chart: mosquitto
   repo: https://storage.googleapis.com/t3n-helm-charts
-  version: 2.4.1
+  version: 2.4.0
 
