@@ -1,0 +1,46 @@
+defaultNamespace: cert-manager
+
+labels:
+  key: cert-manager-secret-provider-class
+
+targetCustomizations:
+- name: k8s-dev
+  clusterName: k8s-dev
+  kustomize:
+    dir: overlays/k8s-dev
+- name: c-j9b9m
+  clusterName: c-j9b9m
+  kustomize:
+    dir: overlays/k8s-aws-dev
+- name: k8s-systest
+  clusterName: k8s-systest
+  kustomize:
+    dir: overlays/k8s-systest
+- name: k8s-arp
+  clusterName: k8s-arp
+  kustomize:
+    dir: overlays/k8s-arp
+- name: k8s-pte
+  clusterName: k8s-pte
+  kustomize:
+    dir: overlays/k8s-pte
+- name: k8s-prod
+  clusterName: k8s-prod
+  kustomize:
+    dir: overlays/k8s-prod
+- name: k8s-sec-prod
+  clusterName: k8s-sec-prod
+  kustomize:
+    dir: overlays/k8s-sec-prod
+- name: rancher-dev
+  kustomize:
+    dir: overlays/rancher-dev
+  clusterSelector:
+    matchLabels:
+      identrust.io/cluster: rancher-dev
+- name: rancher-prod
+  kustomize:
+    dir: overlays/rancher-prod
+  clusterSelector:
+    matchLabels:
+      identrust.io/cluster: rancher-prod
