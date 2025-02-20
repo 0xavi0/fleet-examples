@@ -13,7 +13,6 @@ helm:
   # URL can be used there is specify where to download the chart from.
   # If repo below is set this value if the chart name in the repo
   chart: ""
-  chart: test
 
   # An https to a valid Helm repository to download the chart from
   repo: ""
