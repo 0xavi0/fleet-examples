@@ -3,8 +3,8 @@
 # The namespace this chart will be installed and restricted to,
 # if not specified the chart will be installed to "default"
 namespace: fleet-helm-example
-namespace: fleet-helm-example2
 
+helm:
 # Custom helm options
 helm:
   # The release name to use. If empty a generated release name will be used
@@ -31,3 +31,4 @@ helm:
   # Custom values that will be passed as values.yaml to the installation
   values:
     replicas: 2
+helm:
