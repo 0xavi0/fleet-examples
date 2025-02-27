@@ -8,4 +8,4 @@ helm:
   timeoutSeconds: 0
   values:
     replicas: 1
-    testValue: 0-1
+    testValue: 0-2
