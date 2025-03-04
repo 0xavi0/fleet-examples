@@ -1,0 +1,7 @@
+defaultNamespace: test-helm
+helm:
+  repo: https://charts.bitnami.com/bitnami
+  chart: mariadb
+  version: 20.4.1
+  releaseName: mariadb
+
