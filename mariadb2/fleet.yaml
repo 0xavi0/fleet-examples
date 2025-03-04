@@ -1,0 +1,7 @@
+defaultNamespace: test-helm
+helm:
+  repo: ""
+  chart: oci://registry-1.docker.io/bitnamicharts/mariadb
+  version: 20.4.1
+  releaseName: mariadb
+
