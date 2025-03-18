@@ -6,7 +6,6 @@ targetCustomizations:
       name: dev
   kustomize:
     dir: overlays/dev
-
 - name: prod
   clusterSelector:
     matchLabels:
