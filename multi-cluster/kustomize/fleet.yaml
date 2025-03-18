@@ -3,13 +3,13 @@ targetCustomizations:
 - name: dev
   clusterSelector:
     matchLabels:
-      env: dev
+      name: dev
   kustomize:
     dir: overlays/dev
 
 - name: prod
   clusterSelector:
     matchLabels:
-      env: prod
+      name: prod
   kustomize:
     dir: overlays/prod
