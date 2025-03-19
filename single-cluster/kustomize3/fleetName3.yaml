@@ -1,4 +1,4 @@
 namespace: fleet-kustomize-example
 kustomize:
-  dir: ""
+  dir: "overlays/name3"
 
