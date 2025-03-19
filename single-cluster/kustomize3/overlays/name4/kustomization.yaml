@@ -1,0 +1,5 @@
+nameSuffix: "-4"
+resources:
+  - ../../base  # Point to the base folder
+patchesStrategicMerge:
+  - secret.yaml 
