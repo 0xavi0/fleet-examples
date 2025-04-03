@@ -1,0 +1,17 @@
+namespace: fleet-mc-helm-example
+targetCustomizations:
+- name: dev
+  helm:
+    values:
+      name: name-dev
+  clusterSelector:
+    matchLabels:
+      env: dev
+
+- name: prod
+  helm:
+    values:
+      name: name-prod
+  clusterSelector:
+    matchLabels:
+      env: prod
