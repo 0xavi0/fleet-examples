@@ -9,6 +9,7 @@ targetCustomizations:
       env: dev
 
 - name: prod
+  doNotDeploy: true
   helm:
     values:
       serviceType: LoadBalancer
