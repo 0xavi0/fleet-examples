@@ -1,7 +1,7 @@
 defaultNamespace: nginx-override
 overrideTargets:
 - name: dev
-  doNotDeploy: true
+  doNotDeploy: false
   clusterSelector:
      matchLabels:
         env: dev
