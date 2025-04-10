@@ -1,4 +1,4 @@
-defaultNamespace: nginx-override
+namespace: nginx-override
 overrideTargets:
 - name: dev
   doNotDeploy: true
