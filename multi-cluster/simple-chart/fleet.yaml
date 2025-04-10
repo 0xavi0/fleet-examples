@@ -9,7 +9,7 @@ targetCustomizations:
       env: dev
 
 - name: prod
-  doNotDeploy: false
+  doNotDeploy: true
   helm:
     values:
       name: name-prod
