@@ -34,6 +34,6 @@ helm:
         # default to namespace of bundle
         namespace: default
         key: values.yaml
-  values:
-    replicas: 1
+#  values:
+#    replicas: 1
 
