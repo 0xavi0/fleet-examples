@@ -28,7 +28,7 @@ helm:
   timeoutSeconds: 0
 
   # Custom values that will be passed as values.yaml to the installation
-  valuesFiles
+  valuesFiles:
     - values-test.yaml
   values: {}
 #    replicas: 1
