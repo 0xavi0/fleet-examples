@@ -28,5 +28,9 @@ helm:
   timeoutSeconds: 0
 
   # Custom values that will be passed as values.yaml to the installation
-  values:
-    replicas: 2
+  valuesFrom:
+    - configMapKeyRef:
+      name: test-map
+      # default to namespace of bundle
+      namespace: default
+      key: values.yaml
