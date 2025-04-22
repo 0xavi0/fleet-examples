@@ -30,6 +30,6 @@ helm:
   # Custom values that will be passed as values.yaml to the installation
   valuesFiles:
     - values-test.yaml
-#  values:
+  values: {}
 #    replicas: 2
 
