@@ -1,4 +1,0 @@
-namespace: kustomize-test
-kustomize:
-  dir: "overlays/test"
-
