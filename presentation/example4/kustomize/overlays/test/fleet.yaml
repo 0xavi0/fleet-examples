@@ -1,4 +1,4 @@
-namespace: fleet-kustomize-example
+namespace: kustomize-test
 kustomize:
   dir: "overlays/test"
 
