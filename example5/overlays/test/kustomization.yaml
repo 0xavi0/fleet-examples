@@ -1,5 +1,0 @@
-nameSuffix: "-test"
-resources:
-  - ../../base  # Point to the base folder
-patchesStrategicMerge:
-  - configmap.yaml 
