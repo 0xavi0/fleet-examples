@@ -1,4 +1,4 @@
 namespace: kustomize-prod
 kustomize:
-  dir: ""
+  dir: "overlays"
 
