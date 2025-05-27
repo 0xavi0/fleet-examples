@@ -1,0 +1,3 @@
+defaultNamespace: test-guestbook
+helm:
+  chart: https://github.com/0xavi0/fleet-examples/raw/refs/heads/test-guestbook-tgz/guestbook-0.0.1.tgz
