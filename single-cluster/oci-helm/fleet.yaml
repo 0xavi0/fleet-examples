@@ -1,0 +1,5 @@
+helm:
+  releaseName: sleeper-chart
+  chart: "oci://192.168.1.45:5555/sleeper-chart"
+  version: "0.1.0"
+
