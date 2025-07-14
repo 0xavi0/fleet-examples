@@ -8,7 +8,7 @@ azureKeyVault:
   credentials: \"wb-az-uat-kv1-creds\"
   data:
   - objectName: k8s001-uat2-audit-audit-spring-datasource-password
-  key: audit.spring.datasource.password
+    key: audit.spring.datasource.password
   - objectName: k8s001-uat2-audit-microservice-esb-pass
-  key: microservice.esb.pass
+    key: microservice.esb.pass
 
