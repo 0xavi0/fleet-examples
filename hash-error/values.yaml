@@ -13,3 +13,4 @@ azureKeyVault:
     key: microservice.esb.pass
 microservice:
   name: test
+
