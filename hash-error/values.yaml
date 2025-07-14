@@ -2,4 +2,13 @@ replication: true
 replicas: 1
 serviceType: NodePort
 azureKeyVault:
-  enabled: false
+  enabled: true
+  name: \"wb-az-uat-kv1\"
+  tenantId: \"b24c718e-a35f-4654-b2fa-501c8126cb37\"
+  credentials: \"wb-az-uat-kv1-creds\"
+  data:
+  - objectName: k8s001-uat2-audit-audit-spring-datasource-password
+  key: audit.spring.datasource.password
+  - objectName: k8s001-uat2-audit-microservice-esb-pass
+  key: microservice.esb.pass
+
