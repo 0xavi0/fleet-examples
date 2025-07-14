@@ -11,4 +11,5 @@ azureKeyVault:
     key: audit.spring.datasource.password
   - objectName: k8s001-uat2-audit-microservice-esb-pass
     key: microservice.esb.pass
-
+microservice:
+  name: test
