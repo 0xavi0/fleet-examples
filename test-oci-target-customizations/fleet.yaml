@@ -1,7 +1,7 @@
 defaultNamespace: test
 helm:
   version: "0.1.0"
-  chart: "oci://192.168.1.172:8082/sleeper-chart"
+  chart: "oci://zot-service.default.svc.cluster.local:8082/sleeper-chart"
   releaseName: "pepito"
   helmSecretName: helm-secret-test
 targetCustomizations:
