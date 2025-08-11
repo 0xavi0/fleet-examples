@@ -1,0 +1,6 @@
+defaultNamespace: test
+helm:
+  version: "0.1.0"
+  chart: "https://192.168.1.172:8081/charts/sleeper-chart-0.1.0.tgz"
+  releaseName: "pepito"
+  helmSecretName: helm-secret-test
