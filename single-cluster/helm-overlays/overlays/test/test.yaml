@@ -1,0 +1,6 @@
+name: test-bundle
+defaultNamespace: test-env
+helm:
+  chart: ./superconfigmap
+  valuesFiles:
+  - overlays/test/test-values.yaml

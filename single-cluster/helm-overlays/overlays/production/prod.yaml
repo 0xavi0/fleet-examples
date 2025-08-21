@@ -1,0 +1,7 @@
+name: prod-bundle
+defaultNamespace: production
+helm:
+  chart: ./superconfigmap
+  values:
+    name: production
+

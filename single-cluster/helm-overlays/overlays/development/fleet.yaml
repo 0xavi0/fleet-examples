@@ -1,0 +1,6 @@
+name: development-bundle
+defaultNamespace: development
+helm:
+  chart: ./superconfigmap
+  valuesFiles:
+  - overlays/development/development-values.yaml
