@@ -1,0 +1,107 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+    meta.helm.sh/release-name: rancher-webhook
+    meta.helm.sh/release-namespace: cattle-system
+  creationTimestamp: "2025-12-18T15:36:43Z"
+  generation: 1
+  labels:
+    app.kubernetes.io/managed-by: Helm
+  name: rancher-webhook
+  namespace: cattle-system
+  resourceVersion: "3060"
+  uid: 477c1981-5754-4b92-90c8-5e9e8ecbe235
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: rancher-webhook
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: rancher-webhook
+    spec:
+      containers:
+      - env:
+        - name: STAMP
+        - name: ENABLE_MCM
+          value: "true"
+        - name: CATTLE_PORT
+          value: "9443"
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        image: rancher/rancher-webhook:v0.9.1
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: https
+            scheme: HTTPS
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 1
+        name: rancher-webhook
+        ports:
+        - containerPort: 9443
+          name: https
+          protocol: TCP
+        resources: {}
+        startupProbe:
+          failureThreshold: 60
+          httpGet:
+            path: /healthz
+            port: https
+            scheme: HTTPS
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 1
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      nodeSelector:
+        kubernetes.io/os: linux
+      priorityClassName: rancher-critical
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: rancher-webhook
+      serviceAccountName: rancher-webhook
+      terminationGracePeriodSeconds: 30
+      tolerations:
+      - effect: NoSchedule
+        key: cattle.io/os
+        operator: Equal
+        value: linux
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: "2025-12-18T15:37:08Z"
+    lastUpdateTime: "2025-12-18T15:37:08Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2025-12-18T15:36:43Z"
+    lastUpdateTime: "2025-12-18T15:37:08Z"
+    message: ReplicaSet "rancher-webhook-7db84cb97f" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  observedGeneration: 1
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1
