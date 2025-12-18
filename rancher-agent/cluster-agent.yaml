@@ -1,0 +1,148 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "4"
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{"management.cattle.io/scale-available":"2"},"name":"cattle-cluster-agent","namespace":"cattle-system"},"spec":{"selector":{"matchLabels":{"app":"cattle-cluster-agent"}},"strategy":{"rollingUpdate":{"maxSurge":1,"maxUnavailable":0},"type":"RollingUpdate"},"template":{"metadata":{"labels":{"app":"cattle-cluster-agent"}},"spec":{"affinity":{"nodeAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[{"preference":{"matchExpressions":[{"key":"node-role.kubernetes.io/controlplane","operator":"In","values":["true"]}]},"weight":100},{"preference":{"matchExpressions":[{"key":"node-role.kubernetes.io/control-plane","operator":"In","values":["true"]}]},"weight":100},{"preference":{"matchExpressions":[{"key":"cattle.io/cluster-agent","operator":"In","values":["true"]}]},"weight":1}],"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"kubernetes.io/os","operator":"NotIn","values":["windows"]}]}]}},"podAntiAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[{"podAffinityTerm":{"labelSelector":{"matchExpressions":[{"key":"app","operator":"In","values":["cattle-cluster-agent"]}]},"topologyKey":"kubernetes.io/hostname"},"weight":100}]}},"containers":[{"env":[{"name":"CATTLE_FEATURES","value":"embedded-cluster-api=false,fleet=false,managed-system-upgrade-controller=true,multi-cluster-management=false,multi-cluster-management-agent=true,provisioningprebootstrap=false,provisioningv2=false,rke2=false,turtles=false,ui-sql-cache=true"},{"name":"CATTLE_SERVER","value":"https://rancher.xavi.ngrok.dev"},{"name":"CATTLE_CA_CHECKSUM","value":"7c13ca2a5166b28f0fe65a7addfbd9158e87b150f5882ed49592e06d50185585"},{"name":"CATTLE_CLUSTER","value":"true"},{"name":"CATTLE_K8S_MANAGED","value":"true"},{"name":"CATTLE_CLUSTER_REGISTRY","value":""},{"name":"CATTLE_CREDENTIAL_NAME","value":"cattle-credentials-8228a7bef3"},{"name":"CATTLE_SUC_APP_NAME_OVERRIDE","value":""},{"name":"CATTLE_SERVER_VERSION","value":"v2.13.0"},{"name":"CATTLE_INSTALL_UUID","value":"06b4d29a-2916-4672-a06b-a416a542eaf3"},{"name":"CATTLE_INGRESS_IP_DOMAIN","value":"sslip.io"},{"name":"STRICT_VERIFY","value":"false"}],"image":"rancher/rancher-agent:v2.13.0","imagePullPolicy":"IfNotPresent","name":"cluster-register","volumeMounts":[{"mountPath":"/cattle-credentials","name":"cattle-credentials","readOnly":true}]}],"serviceAccountName":"cattle","tolerations":[{"effect":"NoSchedule","key":"node-role.kubernetes.io/controlplane","value":"true"},{"effect":"NoSchedule","key":"node-role.kubernetes.io/control-plane","operator":"Exists"}],"volumes":[{"name":"cattle-credentials","secret":{"defaultMode":320,"secretName":"cattle-credentials-8228a7bef3"}}]}}}}
+    management.cattle.io/scale-available: "2"
+  creationTimestamp: "2025-12-18T14:20:10Z"
+  generation: 4
+  name: cattle-cluster-agent
+  namespace: cattle-system
+  resourceVersion: "1278"
+  uid: f0dcc24c-f742-4ac8-9cb1-a55b0f72aa1c
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: cattle-cluster-agent
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        agent.cluster.cattle.io/upgraded-v1.22: "true"
+      creationTimestamp: null
+      labels:
+        app: cattle-cluster-agent
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: node-role.kubernetes.io/controlplane
+                operator: In
+                values:
+                - "true"
+            weight: 100
+          - preference:
+              matchExpressions:
+              - key: node-role.kubernetes.io/control-plane
+                operator: In
+                values:
+                - "true"
+            weight: 100
+          - preference:
+              matchExpressions:
+              - key: cattle.io/cluster-agent
+                operator: In
+                values:
+                - "true"
+            weight: 1
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/os
+                operator: NotIn
+                values:
+                - windows
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - cattle-cluster-agent
+              topologyKey: kubernetes.io/hostname
+            weight: 100
+      containers:
+      - env:
+        - name: CATTLE_FEATURES
+          value: embedded-cluster-api=false,fleet=false,managed-system-upgrade-controller=true,multi-cluster-management=false,multi-cluster-management-agent=true,provisioningprebootstrap=false,provisioningv2=false,rke2=false,turtles=false,ui-sql-cache=true
+        - name: CATTLE_SERVER
+          value: https://rancher.xavi.ngrok.dev
+        - name: CATTLE_CA_CHECKSUM
+          value: 7c13ca2a5166b28f0fe65a7addfbd9158e87b150f5882ed49592e06d50185585
+        - name: CATTLE_CLUSTER
+          value: "true"
+        - name: CATTLE_K8S_MANAGED
+          value: "true"
+        - name: CATTLE_CLUSTER_REGISTRY
+        - name: CATTLE_CREDENTIAL_NAME
+          value: cattle-credentials-8228a7bef3
+        - name: CATTLE_SUC_APP_NAME_OVERRIDE
+        - name: CATTLE_SERVER_VERSION
+          value: v2.13.0
+        - name: CATTLE_INSTALL_UUID
+          value: 06b4d29a-2916-4672-a06b-a416a542eaf3
+        - name: CATTLE_INGRESS_IP_DOMAIN
+          value: sslip.io
+        - name: STRICT_VERIFY
+          value: "false"
+        image: rancher/rancher-agent:v2.13.0
+        imagePullPolicy: IfNotPresent
+        name: cluster-register
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /cattle-credentials
+          name: cattle-credentials
+          readOnly: true
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: cattle
+      serviceAccountName: cattle
+      terminationGracePeriodSeconds: 30
+      tolerations:
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/controlplane
+        value: "true"
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/control-plane
+        operator: Exists
+      volumes:
+      - name: cattle-credentials
+        secret:
+          defaultMode: 320
+          secretName: cattle-credentials-8228a7bef3
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: "2025-12-18T14:20:39Z"
+    lastUpdateTime: "2025-12-18T14:20:39Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2025-12-18T14:20:10Z"
+    lastUpdateTime: "2025-12-18T14:21:08Z"
+    message: ReplicaSet "cattle-cluster-agent-bff674959" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  observedGeneration: 4
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1
