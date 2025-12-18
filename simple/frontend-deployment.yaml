@@ -2,8 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
-#  annotations:
-#    meta.helm.sh/release-name: simple-simple-test
+  annotations:
+    meta.helm.sh/release-name: simple-simple-test
 spec:
   selector:
     matchLabels:
