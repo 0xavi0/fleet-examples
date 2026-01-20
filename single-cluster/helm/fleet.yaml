@@ -27,6 +27,9 @@ helm:
   # is less that or equal to zero, we will not wait in Helm
   timeoutSeconds: 0
 
-  # Custom values that will be passed as values.yaml to the installation
-  values:
-    replicas: 2
+  valuesFrom:
+    - configMapKeyRef:
+        name: configmap-values
+        namespace: default
+        key: values.yaml
+
