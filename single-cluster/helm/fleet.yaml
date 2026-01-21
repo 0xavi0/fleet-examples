@@ -4,6 +4,10 @@
 # if not specified the chart will be installed to "default"
 namespace: fleet-helm-example
 
+downstreamResources:
+  - kind: configmap
+    name: configmap-values
+
 # Custom helm options
 helm:
   # The release name to use. If empty a generated release name will be used
@@ -30,6 +34,5 @@ helm:
   valuesFrom:
     - configMapKeyRef:
         name: configmap-values
-        namespace: default
         key: values.yaml
 
