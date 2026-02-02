@@ -1,0 +1,6 @@
+apiVersion: v2
+name: pending-install-demo
+description: Demo chart that gets stuck in PendingInstall via pre-install hook
+type: application
+version: 0.1.0
+appVersion: "1.0"
