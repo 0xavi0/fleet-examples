@@ -6,10 +6,8 @@ metadata:
   name: test
   namespace: fleet-local
 spec:
-  correctDrift: {}
   helm:
     chart: https://github.com/rancher/fleet-examples/releases/download/example/guestbook-0.0.1.tgz
-  ignore: {}
   kustomize:
     dir: overlays/dev
   namespace: fleet-helm-kustomize-example
@@ -188,18 +186,6 @@ spec:
       ```
     name: README.md
   - content: |
-      # This file and all contents in it are OPTIONAL.
-      #
-      # Refer to ../helm/fleet.yaml and ../kustomize/fleet.yaml for the full reference
-      # of what can be included here.  All Helm and Kustomize options apply
-
-      namespace: fleet-helm-kustomize-example
-      helm:
-        chart: https://github.com/rancher/fleet-examples/releases/download/example/guestbook-0.0.1.tgz
-      kustomize:
-        dir: overlays/dev
-    name: fleet.yaml
-  - content: |
       patchesStrategicMerge:
       - redis-slave-deployment.yaml
       - redis-slave-service.yaml
@@ -223,6 +209,4 @@ spec:
     name: overlays/dev/redis-slave-service.yaml
   targets:
   - clusterGroup: default
-    correctDrift: {}
-    ignore: {}
     name: default

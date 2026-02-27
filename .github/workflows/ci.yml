@@ -14,28 +14,57 @@ jobs:
       fail-fast: false
       matrix:
         fleet_version:
-          - "v0.8.1"
-          - "v0.9.0"
+          - "v0.13.8"
+          - "latest"
 
     steps:
       -
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       -
-        uses: actions/cache@v3
+        name: Resolve Fleet Version
+        id: resolve-version
+        run: |
+          VERSION="${{ matrix.fleet_version }}"
+          if [ "$VERSION" = "latest" ]; then
+            VERSION=$(curl -s https://api.github.com/repos/rancher/fleet/releases/latest | jq -r '.tag_name')
+          fi
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+      -
+        uses: actions/cache@v4
         id: fleet-cli-cache
         with:
           path: /home/runner/.local/bin
-          key: ${{ runner.os }}-fleet-cli-${{ matrix.fleet_version }}
+          key: ${{ runner.os }}-fleet-cli-${{ steps.resolve-version.outputs.version }}
       -
         name: Download CLI
         if: steps.fleet-cli-cache.outputs.cache-hit != 'true'
         run: |
           mkdir -p /home/runner/.local/bin
-          wget -nv "https://github.com/rancher/fleet/releases/download/${{ matrix.fleet_version }}/fleet-linux-amd64"
+          wget -nv "https://github.com/rancher/fleet/releases/download/${{ steps.resolve-version.outputs.version }}/fleet-linux-amd64"
           mv fleet-linux-amd64 /home/runner/.local/bin/fleet
           chmod +x /home/runner/.local/bin/fleet
+      -
+        name: Set up k3d cluster
+        run: |
+          # Install k3d
+          curl --silent --fail https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | TAG=v5.8.3 bash
+          # Create a minimal cluster (no load balancer needed)
+          k3d cluster create fleet-test --no-lb --wait --timeout 120s
+          k3d kubeconfig merge fleet-test --kubeconfig-merge-default
+
+          # Install Fleet CRDs for the exact CLI version under test so that
+          # `kubectl apply` and `fleet target` can use the Cluster CRD.
+          FLEET_VER="${{ steps.resolve-version.outputs.version }}"
+          curl -sL "https://github.com/rancher/fleet/releases/download/${FLEET_VER}/fleet-crd-${FLEET_VER#v}.tgz" \
+            | tar -xz -O fleet-crd/templates/crds.yaml \
+            | kubectl apply -f -
+
+          # Create namespaces and minimal cluster objects for targeting
+          kubectl create namespace fleet-local
+          kubectl create namespace fleet-default
+          kubectl apply -f tests/setup-cluster.yaml
       -
         name: Test
         run: |

@@ -6,8 +6,6 @@ metadata:
   name: test
   namespace: fleet-default
 spec:
-  correctDrift: {}
-  ignore: {}
   namespace: fleet-mc-kustomize-example
   resources:
   - content: |
@@ -195,30 +193,6 @@ spec:
           tier: backend
     name: base/redis-slave-service.yaml
   - content: |
-      namespace: fleet-mc-kustomize-example
-      targetCustomizations:
-      - name: dev
-        clusterSelector:
-          matchLabels:
-            env: dev
-        kustomize:
-          dir: overlays/dev
-
-      - name: test
-        clusterSelector:
-          matchLabels:
-            env: test
-        kustomize:
-          dir: overlays/test
-
-      - name: prod
-        clusterSelector:
-          matchLabels:
-            env: prod
-        kustomize:
-          dir: overlays/prod
-    name: fleet.yaml
-  - content: |
       resources:
       - ../../base
       patchesStrategicMerge:
@@ -283,24 +257,18 @@ spec:
   - clusterSelector:
       matchLabels:
         env: dev
-    correctDrift: {}
-    ignore: {}
     kustomize:
       dir: overlays/dev
     name: dev
   - clusterSelector:
       matchLabels:
         env: test
-    correctDrift: {}
-    ignore: {}
     kustomize:
       dir: overlays/test
     name: test
   - clusterSelector:
       matchLabels:
         env: prod
-    correctDrift: {}
-    ignore: {}
     kustomize:
       dir: overlays/prod
     name: prod

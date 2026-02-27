@@ -6,10 +6,8 @@ metadata:
   name: test
   namespace: fleet-default
 spec:
-  correctDrift: {}
   helm:
     chart: https://github.com/rancher/fleet-examples/releases/download/example/guestbook-0.0.1.tgz
-  ignore: {}
   namespace: fleet-mc-helm-external-example
   resources:
   - content: |
@@ -206,65 +204,29 @@ spec:
               env: prod
       ```
     name: README.md
-  - content: |
-      namespace: fleet-mc-helm-external-example
-      helm:
-        chart: https://github.com/rancher/fleet-examples/releases/download/example/guestbook-0.0.1.tgz
-      targetCustomizations:
-      - name: dev
-        helm:
-          values:
-            replication: false
-        clusterSelector:
-          matchLabels:
-            env: dev
-
-      - name: test
-        helm:
-          values:
-            replicas: 3
-        clusterSelector:
-          matchLabels:
-            env: test
-
-      - name: prod
-        helm:
-          values:
-            serviceType: LoadBalancer
-            replicas: 3
-        clusterSelector:
-          matchLabels:
-            env: prod
-    name: fleet.yaml
   targets:
   - clusterSelector:
       matchLabels:
         env: dev
-    correctDrift: {}
     helm:
       chart: https://github.com/rancher/fleet-examples/releases/download/example/guestbook-0.0.1.tgz
       values:
         replication: false
-    ignore: {}
     name: dev
   - clusterSelector:
       matchLabels:
         env: test
-    correctDrift: {}
     helm:
       chart: https://github.com/rancher/fleet-examples/releases/download/example/guestbook-0.0.1.tgz
       values:
         replicas: 3
-    ignore: {}
     name: test
   - clusterSelector:
       matchLabels:
         env: prod
-    correctDrift: {}
     helm:
       chart: https://github.com/rancher/fleet-examples/releases/download/example/guestbook-0.0.1.tgz
       values:
         replicas: 3
         serviceType: LoadBalancer
-    ignore: {}
     name: prod

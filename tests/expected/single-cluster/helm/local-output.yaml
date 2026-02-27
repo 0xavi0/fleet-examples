@@ -1,3 +1,60 @@
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      objectset.rio.cattle.io/id: -test
+    labels:
+      app: guestbook
+      objectset.rio.cattle.io/hash: c0fae66aeeea5c9703d7410307d74609c272103d
+      tier: frontend
+    name: frontend
+    namespace: fleet-helm-example
+  spec:
+    ports:
+    - port: 80
+    selector:
+      app: guestbook
+      tier: frontend
+    type: NodePort
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      objectset.rio.cattle.io/id: -test
+    labels:
+      app: redis
+      objectset.rio.cattle.io/hash: c0fae66aeeea5c9703d7410307d74609c272103d
+      role: master
+      tier: backend
+    name: redis-master
+    namespace: fleet-helm-example
+  spec:
+    ports:
+    - port: 6379
+      targetPort: 6379
+    selector:
+      app: redis
+      role: master
+      tier: backend
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      objectset.rio.cattle.io/id: -test
+    labels:
+      app: redis
+      objectset.rio.cattle.io/hash: c0fae66aeeea5c9703d7410307d74609c272103d
+      role: slave
+      tier: backend
+    name: redis-slave
+    namespace: fleet-helm-example
+  spec:
+    ports:
+    - port: 6379
+    selector:
+      app: redis
+      role: slave
+      tier: backend
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
@@ -6,9 +63,9 @@
     labels:
       objectset.rio.cattle.io/hash: c0fae66aeeea5c9703d7410307d74609c272103d
     name: frontend
-    namespace: fleet-mc-manifest-example
+    namespace: fleet-helm-example
   spec:
-    replicas: 3
+    replicas: 2
     selector:
       matchLabels:
         app: guestbook
@@ -28,24 +85,6 @@
             requests:
               cpu: 100m
               memory: 100Mi
-- apiVersion: v1
-  kind: Service
-  metadata:
-    annotations:
-      objectset.rio.cattle.io/id: -test
-    labels:
-      app: guestbook
-      objectset.rio.cattle.io/hash: c0fae66aeeea5c9703d7410307d74609c272103d
-      tier: frontend
-    name: frontend
-    namespace: fleet-mc-manifest-example
-  spec:
-    ports:
-    - port: 80
-    selector:
-      app: guestbook
-      tier: frontend
-    type: NodePort
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
@@ -54,7 +93,7 @@
     labels:
       objectset.rio.cattle.io/hash: c0fae66aeeea5c9703d7410307d74609c272103d
     name: redis-master
-    namespace: fleet-mc-manifest-example
+    namespace: fleet-helm-example
   spec:
     replicas: 1
     selector:
@@ -78,26 +117,6 @@
             requests:
               cpu: 100m
               memory: 100Mi
-- apiVersion: v1
-  kind: Service
-  metadata:
-    annotations:
-      objectset.rio.cattle.io/id: -test
-    labels:
-      app: redis
-      objectset.rio.cattle.io/hash: c0fae66aeeea5c9703d7410307d74609c272103d
-      role: master
-      tier: backend
-    name: redis-master
-    namespace: fleet-mc-manifest-example
-  spec:
-    ports:
-    - port: 6379
-      targetPort: 6379
-    selector:
-      app: redis
-      role: master
-      tier: backend
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
@@ -106,7 +125,7 @@
     labels:
       objectset.rio.cattle.io/hash: c0fae66aeeea5c9703d7410307d74609c272103d
     name: redis-slave
-    namespace: fleet-mc-manifest-example
+    namespace: fleet-helm-example
   spec:
     replicas: 2
     selector:
@@ -130,23 +149,4 @@
             requests:
               cpu: 100m
               memory: 100Mi
-- apiVersion: v1
-  kind: Service
-  metadata:
-    annotations:
-      objectset.rio.cattle.io/id: -test
-    labels:
-      app: redis
-      objectset.rio.cattle.io/hash: c0fae66aeeea5c9703d7410307d74609c272103d
-      role: slave
-      tier: backend
-    name: redis-slave
-    namespace: fleet-mc-manifest-example
-  spec:
-    ports:
-    - port: 6379
-    selector:
-      app: redis
-      role: slave
-      tier: backend
 

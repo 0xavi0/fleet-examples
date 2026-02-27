@@ -36,3 +36,72 @@ and configure the app differently for each target.
 
 Using downstream clusters with Windows nodes?
 Check out the [windows-helm](multi-cluster/windows-helm/) multi-cluster example above.
+
+## Running Tests Locally
+
+The test suite renders every example using the Fleet CLI and compares the output
+against committed expected files.
+
+### Prerequisites
+
+- [k3d](https://k3d.io/) v5.8.3 or newer
+- `kubectl`
+- Fleet CLI — download a release binary from
+  [fleet releases](https://github.com/rancher/fleet/releases) and put it on
+  your `PATH`, e.g.:
+  ```bash
+  FLEET_VERSION=v0.14.3
+  curl -sL "https://github.com/rancher/fleet/releases/download/${FLEET_VERSION}/fleet-linux-amd64" \
+    -o ~/.local/bin/fleet && chmod +x ~/.local/bin/fleet
+  ```
+
+### One-time cluster setup
+
+Create a minimal k3d cluster, install Fleet CRDs, and populate the cluster
+objects the tests rely on:
+
+```bash
+FLEET_VERSION=v0.14.3
+
+# Create cluster
+k3d cluster create fleet-test --no-lb --wait --timeout 120s
+k3d kubeconfig merge fleet-test --kubeconfig-merge-default
+
+# Install Fleet CRDs (use the same version as your fleet CLI)
+curl -sL "https://github.com/rancher/fleet/releases/download/${FLEET_VERSION}/fleet-crd-${FLEET_VERSION#v}.tgz" \
+  | tar -xz -O fleet-crd/templates/crds.yaml \
+  | kubectl apply -f -
+
+# Create namespaces and cluster objects
+kubectl create namespace fleet-local
+kubectl create namespace fleet-default
+kubectl apply -f tests/setup-cluster.yaml
+```
+
+The cluster can be reused across test runs and deleted afterwards with
+`k3d cluster delete fleet-test`.
+
+### Running the tests
+
+```bash
+tests/test.sh
+```
+
+The script runs `fleet apply`, `fleet target`, and `fleet deploy -d` for each
+example and compares the rendered output against the files in `tests/expected/`.
+
+### Updating expected files
+
+When an example or the Fleet CLI changes the rendered output, regenerate the
+expected files by running the tests once until they fail on the `diff` step,
+then copy the fresh output into `expected/`:
+
+```bash
+# Run once — will fail at the diff step but generate the new output
+tests/test.sh || true
+
+# Accept the new output as the expected baseline
+cp -r tests/output/* tests/expected/
+# or selectively: cp tests/output/multi-cluster/kustomize/dev-output.yaml \
+#                    tests/expected/multi-cluster/kustomize/dev-output.yaml
+```

@@ -1,0 +1,51 @@
+# Minimal Fleet cluster objects for the test k3d cluster.
+#
+# single-cluster examples target the fleet-local namespace.  Fleet creates a
+# single "local" cluster there by default plus a "default" ClusterGroup that
+# selects all clusters.  We reproduce that minimal state here.
+#
+# multi-cluster examples target the fleet-default namespace and use
+# clusterSelector.matchLabels: {env: dev/test/prod} targetCustomizations.
+# We create one Cluster per environment there.
+---
+apiVersion: fleet.cattle.io/v1alpha1
+kind: Cluster
+metadata:
+  name: local
+  namespace: fleet-local
+spec: {}
+---
+apiVersion: fleet.cattle.io/v1alpha1
+kind: ClusterGroup
+metadata:
+  name: default
+  namespace: fleet-local
+spec:
+  selector: {}
+---
+apiVersion: fleet.cattle.io/v1alpha1
+kind: Cluster
+metadata:
+  name: dev
+  namespace: fleet-default
+  labels:
+    env: dev
+spec: {}
+---
+apiVersion: fleet.cattle.io/v1alpha1
+kind: Cluster
+metadata:
+  name: test
+  namespace: fleet-default
+  labels:
+    env: test
+spec: {}
+---
+apiVersion: fleet.cattle.io/v1alpha1
+kind: Cluster
+metadata:
+  name: prod
+  namespace: fleet-default
+  labels:
+    env: prod
+spec: {}

@@ -6,8 +6,6 @@ metadata:
   name: test
   namespace: fleet-default
 spec:
-  correctDrift: {}
-  ignore: {}
   namespace: fleet-mc-helm-example
   resources:
   - content: |
@@ -57,34 +55,6 @@ spec:
               env: prod
       ```
     name: README.md
-  - content: |
-      namespace: fleet-mc-helm-example
-      targetCustomizations:
-      - name: dev
-        helm:
-          values:
-            replication: false
-        clusterSelector:
-          matchLabels:
-            env: dev
-
-      - name: test
-        helm:
-          values:
-            replicas: 3
-        clusterSelector:
-          matchLabels:
-            env: test
-
-      - name: prod
-        helm:
-          values:
-            serviceType: LoadBalancer
-            replicas: 3
-        clusterSelector:
-          matchLabels:
-            env: prod
-    name: fleet.yaml
   - content: |
       apiVersion: apps/v1
       kind: Deployment
@@ -236,28 +206,22 @@ spec:
   - clusterSelector:
       matchLabels:
         env: dev
-    correctDrift: {}
     helm:
       values:
         replication: false
-    ignore: {}
     name: dev
   - clusterSelector:
       matchLabels:
         env: test
-    correctDrift: {}
     helm:
       values:
         replicas: 3
-    ignore: {}
     name: test
   - clusterSelector:
       matchLabels:
         env: prod
-    correctDrift: {}
     helm:
       values:
         replicas: 3
         serviceType: LoadBalancer
-    ignore: {}
     name: prod

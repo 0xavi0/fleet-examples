@@ -6,9 +6,9 @@
     labels:
       objectset.rio.cattle.io/hash: c0fae66aeeea5c9703d7410307d74609c272103d
     name: frontend
-    namespace: fleet-mc-manifest-example
+    namespace: fleet-kustomize-example
   spec:
-    replicas: 3
+    replicas: 1
     selector:
       matchLabels:
         app: guestbook
@@ -38,7 +38,7 @@
       objectset.rio.cattle.io/hash: c0fae66aeeea5c9703d7410307d74609c272103d
       tier: frontend
     name: frontend
-    namespace: fleet-mc-manifest-example
+    namespace: fleet-kustomize-example
   spec:
     ports:
     - port: 80
@@ -54,7 +54,7 @@
     labels:
       objectset.rio.cattle.io/hash: c0fae66aeeea5c9703d7410307d74609c272103d
     name: redis-master
-    namespace: fleet-mc-manifest-example
+    namespace: fleet-kustomize-example
   spec:
     replicas: 1
     selector:
@@ -89,7 +89,7 @@
       role: master
       tier: backend
     name: redis-master
-    namespace: fleet-mc-manifest-example
+    namespace: fleet-kustomize-example
   spec:
     ports:
     - port: 6379
@@ -106,9 +106,9 @@
     labels:
       objectset.rio.cattle.io/hash: c0fae66aeeea5c9703d7410307d74609c272103d
     name: redis-slave
-    namespace: fleet-mc-manifest-example
+    namespace: fleet-kustomize-example
   spec:
-    replicas: 2
+    replicas: 0
     selector:
       matchLabels:
         app: redis
@@ -141,12 +141,12 @@
       role: slave
       tier: backend
     name: redis-slave
-    namespace: fleet-mc-manifest-example
+    namespace: fleet-kustomize-example
   spec:
     ports:
     - port: 6379
     selector:
       app: redis
-      role: slave
+      role: master
       tier: backend
 

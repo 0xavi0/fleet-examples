@@ -6,8 +6,6 @@ metadata:
   name: test
   namespace: fleet-default
 spec:
-  correctDrift: {}
-  ignore: {}
   namespace: fleet-mc-manifest-example
   resources:
   - content: |
@@ -49,37 +47,6 @@ spec:
               env: prod
       ```
     name: README.md
-  - content: |
-      namespace: fleet-mc-manifest-example
-      targetCustomizations:
-      - name: dev
-        clusterSelector:
-          matchLabels:
-            env: dev
-        yaml:
-          overlays:
-          # Refers to overlays/noreplication folder
-          - noreplication
-
-      - name: test
-        clusterSelector:
-          matchLabels:
-            env: test
-        yaml:
-          overlays:
-          # Refers to overlays/scale3 folder
-          - scale3
-
-      - name: prod
-        clusterSelector:
-          matchLabels:
-            env: prod
-        yaml:
-          # Refers to overlays/servicelb, scale3 folders
-          overlays:
-          - servicelb
-          - scale3
-    name: fleet.yaml
   - content: |
       apiVersion: apps/v1
       kind: Deployment
@@ -234,8 +201,6 @@ spec:
   - clusterSelector:
       matchLabels:
         env: dev
-    correctDrift: {}
-    ignore: {}
     name: dev
     yaml:
       overlays:
@@ -243,8 +208,6 @@ spec:
   - clusterSelector:
       matchLabels:
         env: test
-    correctDrift: {}
-    ignore: {}
     name: test
     yaml:
       overlays:
@@ -252,8 +215,6 @@ spec:
   - clusterSelector:
       matchLabels:
         env: prod
-    correctDrift: {}
-    ignore: {}
     name: prod
     yaml:
       overlays:

@@ -6,8 +6,6 @@ metadata:
   name: test
   namespace: fleet-local
 spec:
-  correctDrift: {}
-  ignore: {}
   kustomize: {}
   namespace: fleet-kustomize-example
   resources:
@@ -175,19 +173,6 @@ spec:
           tier: backend
     name: base/redis-slave-service.yaml
   - content: |
-      # This file and all contents in it are OPTIONAL.
-
-      # The default namespace to apply to resources that are namespaced
-      # but do not specify a namespace.  In this example no resources
-      # are configured with a namespace so this default will apply
-      namespace: fleet-kustomize-example
-
-
-      kustomize:
-        # To use a kustomization.yaml different from the one in the root folder
-        dir: ""
-    name: fleet.yaml
-  - content: |
       bases:
       - overlays/dev
     name: kustomization.yaml
@@ -217,6 +202,4 @@ spec:
     name: overlays/dev/redis-slave-service.yaml
   targets:
   - clusterGroup: default
-    correctDrift: {}
-    ignore: {}
     name: default
