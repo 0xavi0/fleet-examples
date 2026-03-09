@@ -1,0 +1,4 @@
+service:
+  ports:
+    mqtt:
+      port: 1882

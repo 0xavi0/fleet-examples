@@ -1,0 +1,42 @@
+defaultNamespace: values1
+helm:
+  releaseName: mosquitto
+  maxHistory: 1
+  repo: https://bdclark.github.io/helm-charts
+  chart: mosquitto
+targetCustomizations:
+  - name: down1
+    clusterSelector:
+      matchLabels:
+        name: down1
+    helm:
+      values:
+        image:
+          tag: 2.0.21
+      valuesFiles:
+        - "values.test1.yaml"
+        - "values.test1b.yaml"
+      valuesFrom:
+        - configMapKeyRef:
+            name: down1-cm
+            namespace: config-maps
+            key: values
+  - name: down2
+    clusterSelector:
+      matchLabels:
+        name: down2
+    helm:
+      values:
+        image:
+          tag: 2.0.20
+      valuesFiles:
+        - "values.test2.yaml"
+        - "values.test2b.yaml"
+      valuesFrom:
+        - configMapKeyRef:
+            name: down2-cm
+            namespace: config-maps
+            key: values
+  - clusterSelector:
+      matchLabels: {}
+    doNotDeploy: true
