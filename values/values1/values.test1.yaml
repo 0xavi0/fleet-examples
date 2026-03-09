@@ -1,4 +1,4 @@
 service:
   ports:
     mqtt:
-      port: 1881
+      port: 2881
