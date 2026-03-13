@@ -16,6 +16,7 @@ jobs:
         fleet_version:
           - "v0.13.8"
           - "latest"
+          - "latest-prerelease"
 
     steps:
       -
@@ -29,8 +30,10 @@ jobs:
           VERSION="${{ matrix.fleet_version }}"
           if [ "$VERSION" = "latest" ]; then
             VERSION=$(curl -s https://api.github.com/repos/rancher/fleet/releases/latest | jq -r '.tag_name')
+          elif [ "$VERSION" = "latest-prerelease" ]; then
+            VERSION=$(curl -s https://api.github.com/repos/rancher/fleet/releases | jq -r '.[0].tag_name')
           fi
-          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
       -
         uses: actions/cache@v4
         id: fleet-cli-cache

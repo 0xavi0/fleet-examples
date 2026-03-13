@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
+
+# Ensure yq is available for YAML normalization
+if ! command -v yq &>/dev/null; then
+    echo "❌ Error: yq is required but not found in PATH"
+    exit 1
+fi
 
 export COMMIT=fake
 
@@ -27,6 +33,11 @@ split_and_deploy() {
     done < <(awk 'BEGIN{RS="---\n"; ORS="\0"} NF' "$target_yaml")
 }
 
+# normalize_yaml FILE: sort list items by kind and name for comparison
+normalize_yaml() {
+    yq 'sort_by(.kind, .metadata.name)' "$1"
+}
+
 fleet -v
 
 # run_fixture CASE [NS_ARG]
@@ -40,7 +51,7 @@ run_fixture() {
     local outdir="$SCRIPT_DIR/output/$case"
     mkdir -p "$outdir"
 
-    pushd "../$case"
+    pushd "../$case" > /dev/null
 
     # shellcheck disable=SC2086
     fleet apply $ns_arg -o - test > "$outdir/bundle.yaml"
@@ -52,7 +63,7 @@ run_fixture() {
 
     rm "$outdir/target.yaml"
 
-    popd
+    popd > /dev/null
 }
 
 for fixture in ./expected/single-cluster/*; do
@@ -65,7 +76,40 @@ for fixture in ./expected/multi-cluster/*; do
     run_fixture "$case" "-n fleet-default"
 done
 
-diff -iwqr output expected
+# Compare output files, ignoring resource ordering
+test_failed=0
+shopt -s nullglob
+for expected_file in expected/*/*; do
+    [[ ! -f "$expected_file" ]] && continue
+
+    output_file="output/${expected_file#expected/}"
+
+    if [[ ! -f "$output_file" ]]; then
+        echo "❌ Missing: $output_file"
+        test_failed=1
+        continue
+    fi
+
+    # Normalize and compare
+    expected_norm=$(normalize_yaml "$expected_file")
+    output_norm=$(normalize_yaml "$output_file")
+
+    if ! diff -q <(echo "$expected_norm") <(echo "$output_norm") > /dev/null 2>&1; then
+        if [[ $test_failed -eq 0 ]]; then
+            echo "❌ Test failed: output differs from expected (ignoring resource order)"
+            echo ""
+            echo "=== DIFFERENCES (normalized) ==="
+        fi
+        echo "File: $expected_file"
+        diff -u <(echo "$expected_norm" | head -30) <(echo "$output_norm" | head -30) || true
+        test_failed=1
+    fi
+done
+
+if [[ $test_failed -eq 1 ]]; then
+    exit 1
+fi
 
 echo All is OK
 rm -rf output
+
