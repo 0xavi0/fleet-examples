@@ -1,0 +1,9 @@
+defaultNamespace: test-th
+helm:
+  chart: ./secret-chart
+  values:
+    secret:
+      name: test-secret-1
+    configmap:
+      name: test-cm-1
+

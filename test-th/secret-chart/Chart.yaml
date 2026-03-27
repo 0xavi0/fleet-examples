@@ -1,0 +1,9 @@
+apiVersion: v2
+name: secret-chart
+description: A test chart that deploys a single Secret with a configurable name
+type: application
+version: 0.1.0
+dependencies:
+  - name: configmap-chart
+    version: 0.1.0
+    repository: https://github.com/0xavi0/fleet-examples/raw/refs/heads/helm-chart-deps/charts
