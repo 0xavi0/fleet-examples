@@ -4,7 +4,7 @@ helm:
   repo: https://charts.bitnami.com/bitnami
   chart: nginx
   releaseName: wrw-1
-  version: 19.1.1
+  version: 22.6.10
   takeOwnership: true
   values:
     service:
