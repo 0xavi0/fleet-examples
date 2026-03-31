@@ -1,0 +1,19 @@
+defaultNamespace: wrw-2
+
+helm:
+  chart: oci://registry-1.docker.io/bitnamicharts/nginx
+  releaseName: wrw-2
+  version: 19.1.1
+  takeOwnership: true
+  values:
+    service:
+      type: ClusterIP
+
+targetCustomizations:
+  - name: filter-cluster-2
+    doNotDeploy: true
+    clusterSelector:
+      matchExpressions:
+      - key: wrw-count
+        operator: In
+        values: ["one"]

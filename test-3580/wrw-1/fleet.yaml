@@ -1,0 +1,11 @@
+defaultNamespace: wrw-1
+
+helm:
+  chart: oci://registry-1.docker.io/bitnamicharts/nginx
+  releaseName: wrw-1
+  version: 19.1.1
+  takeOwnership: true
+  values:
+    service:
+      type: ClusterIP
+
