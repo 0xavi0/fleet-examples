@@ -1,7 +1,8 @@
 defaultNamespace: wrw-2
 
 helm:
-  chart: oci://registry-1.docker.io/bitnamicharts/nginx
+  chart: nginx
+  repo: https://charts.bitnami.com/bitnami
   releaseName: wrw-2
   version: 19.1.1
   takeOwnership: true
