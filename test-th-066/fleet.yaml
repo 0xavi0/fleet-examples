@@ -1,0 +1,32 @@
+defaultNamespace: test-th-066
+helm:
+  repo: https://github.com/0xavi0/fleet-examples/raw/refs/heads/helm-chart-deps/charts
+  chart: secret-chart
+  version: 0.1.0
+  values:
+    secret:
+      name: test-secret-066
+    configmap-chart:
+      configmap:
+        name: test-cm-066
+targetCustomizations:
+  - name: test
+    clusterSelector:
+      matchExpressions:
+        - key: fleet.cattle.io/test/state
+          operator: In
+          values:
+            - running
+            - scaledDown
+      matchLabels:
+        fleet.cattle.io/test/cluster: cluster-5
+    helm:
+      values:
+        secret:
+          name: test-secret-066
+        configmap-chart:
+          configmap:
+            name: test-cm-066
+  - clusterSelector:
+      matchLabels: {}
+    doNotDeploy: true
