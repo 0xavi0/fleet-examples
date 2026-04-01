@@ -6,7 +6,7 @@ metadata:
 spec:
   repo: https://github.com/0xavi0/fleet-examples
   branch: helm-chart-deps
-  pollingInterval: 35s
+  disablePolling: true
   paths:
   - test-th-012
   targets:
