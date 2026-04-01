@@ -28,5 +28,9 @@ targetCustomizations:
           configmap:
             name: test-cm-089
   - clusterSelector:
-      matchLabels: {}
+      matchExpressions:
+        - key: fleet.cattle.io/cluster
+          operator: NotIn
+          values:
+            - sim-cluster-3
     doNotDeploy: true
