@@ -2,7 +2,17 @@ apiVersion: v1
 entries:
   configmap-chart:
   - apiVersion: v2
-    created: "2026-03-31T14:32:02.209172+02:00"
+    created: "2026-04-01T13:56:55.280462+02:00"
+    description: A test chart that deploys a single ConfigMap with a configurable
+      name
+    digest: ba97305c85702b71bb5d87ec68cd8ba88eb1010e5070b206a315c28c9b992153
+    name: configmap-chart
+    type: application
+    urls:
+    - https://github.com/0xavi0/fleet-examples/raw/refs/heads/helm-chart-deps/charts/configmap-chart-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    created: "2026-04-01T13:56:55.279829+02:00"
     description: A test chart that deploys a single ConfigMap with a configurable
       name
     digest: 90e4968e151f266bdc19d709532d0d5ea1211898f2f21ea96001abebb0ab06c3
@@ -13,7 +23,20 @@ entries:
     version: 0.1.0
   secret-chart:
   - apiVersion: v2
-    created: "2026-03-31T14:32:02.209703+02:00"
+    created: "2026-04-01T13:56:55.282232+02:00"
+    dependencies:
+    - name: configmap-chart
+      repository: https://github.com/0xavi0/fleet-examples/raw/refs/heads/helm-chart-deps/charts
+      version: 0.2.0
+    description: A test chart that deploys a single Secret with a configurable name
+    digest: cc46551ad876e4ee179dced1d687d6c4d62318de6d2a981c870d599ee6be1ecc
+    name: secret-chart
+    type: application
+    urls:
+    - https://github.com/0xavi0/fleet-examples/raw/refs/heads/helm-chart-deps/charts/secret-chart-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    created: "2026-04-01T13:56:55.281427+02:00"
     dependencies:
     - name: configmap-chart
       repository: https://github.com/0xavi0/fleet-examples/raw/refs/heads/helm-chart-deps/charts
@@ -25,4 +48,4 @@ entries:
     urls:
     - https://github.com/0xavi0/fleet-examples/raw/refs/heads/helm-chart-deps/charts/secret-chart-0.1.0.tgz
     version: 0.1.0
-generated: "2026-03-31T14:32:02.207721+02:00"
+generated: "2026-04-01T13:56:55.277796+02:00"
