@@ -12,12 +12,6 @@ helm:
 targetCustomizations:
   - name: test
     clusterSelector:
-      matchExpressions:
-        - key: fleet.cattle.io/state
-          operator: In
-          values:
-            - running
-            - scaledDown
       matchLabels:
         fleet.cattle.io/cluster: sim-cluster-3
     helm:
