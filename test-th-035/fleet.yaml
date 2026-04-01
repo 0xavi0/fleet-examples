@@ -13,7 +13,7 @@ targetCustomizations:
   - name: test
     clusterSelector:
       matchExpressions:
-        - key: fleet.cattle.io/test/state
+        - key: fleet.cattle.io/state
           operator: In
           values:
             - running
