@@ -5,6 +5,7 @@ metadata:
   namespace: fleet-default
 spec:
   repo: https://github.com/rancher/fleet-examples
+  branch: helm-chart-deps
   pollingInterval: 35s
   paths:
   - test-th-028
