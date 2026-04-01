@@ -1,0 +1,13 @@
+kind: GitRepo
+apiVersion: fleet.cattle.io/v1alpha1
+metadata:
+  name: test-th-020
+  namespace: fleet-default
+spec:
+  repo: https://github.com/rancher/fleet-examples
+  pollingInterval: 35s
+  paths:
+  - test-th-020
+  targets:
+  # Match everything
+  - clusterSelector: {}
