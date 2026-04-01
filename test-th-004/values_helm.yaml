@@ -2,4 +2,4 @@ secret:
   name: test-secret-file-004
 configmap-chart:
   configmap:
-    name: test-cm-superfile-004
+    name: test-cm-file-004
