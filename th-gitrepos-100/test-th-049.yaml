@@ -4,7 +4,7 @@ metadata:
   name: test-th-049
   namespace: fleet-default
 spec:
-  repo: https://github.com/rancher/fleet-examples
+  repo: https://github.com/0xavi0/fleet-examples
   branch: helm-chart-deps
   pollingInterval: 35s
   paths:
