@@ -9,3 +9,15 @@ helm:
     configmap-chart:
       configmap:
         name: test-cm-001
+targetCustomizations:
+  - name: test
+    clusterSelector:
+      matchLabels:
+        fleet.cattle.io/cluster: sim-cluster-3
+    helm:
+      values:
+        secret:
+          name: test-secret-3-001
+        configmap-chart:
+          configmap:
+            name: test-cm-3-001
