@@ -19,7 +19,7 @@ targetCustomizations:
             - running
             - scaledDown
       matchLabels:
-        fleet.cattle.io/test/cluster: sim-cluster-1
+        fleet.cattle.io/cluster: sim-cluster-1
     helm:
       values:
         secret:
