@@ -21,3 +21,10 @@ targetCustomizations:
         configmap-chart:
           configmap:
             name: test-cm-3-001
+  - clusterSelector:
+      matchExpressions:
+        - key: fleet.cattle.io/cluster
+          operator: NotIn
+          values:
+            - sim-cluster-3
+    doNotDeploy: true
