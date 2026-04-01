@@ -19,7 +19,7 @@ targetCustomizations:
             - running
             - scaledDown
       matchLabels:
-        fleet.cattle.io/cluster: sim-cluster-1
+        fleet.cattle.io/cluster: sim-cluster-5
     helm:
       values:
         secret:
@@ -28,5 +28,9 @@ targetCustomizations:
           configmap:
             name: test-cm-004
   - clusterSelector:
-      matchLabels: {}
+      matchExpressions:
+        - key: fleet.cattle.io/cluster
+          operator: NotIn
+          values:
+            - sim-cluster-5
     doNotDeploy: true
