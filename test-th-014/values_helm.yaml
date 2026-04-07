@@ -1,6 +1,6 @@
 secret:
   name: test-secret-file-014
-  data: 31
+  data: 4
 configmap-chart:
   configmap:
     name: test-cm-file-014
