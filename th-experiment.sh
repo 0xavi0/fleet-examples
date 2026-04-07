@@ -6,6 +6,33 @@ N=${1:?Usage: $0 <N>}
 REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$REPO_DIR"
 
+# Detect yq flavour: mikefarah/yq (Go) vs kislyuk/yq (Python/jq-wrapper)
+if yq --version 2>&1 | grep -qi "mikefarah"; then
+  YQ_GO=true
+else
+  YQ_GO=false
+fi
+
+# yq_set_secret_data <value> <file>  — sets .secret.data in-place
+yq_set_secret_data() {
+  local val="$1" file="$2"
+  if $YQ_GO; then
+    yq e ".secret.data = ${val}" -i "${file}"
+  else
+    yq -y ".secret.data = ${val}" "${file}" > "${file}.tmp" && mv "${file}.tmp" "${file}"
+  fi
+}
+
+# yq_to_json <file>  — prints the YAML file as compact JSON
+yq_to_json() {
+  local file="$1"
+  if $YQ_GO; then
+    yq e -o=json '.' "${file}" | jq -cS .
+  else
+    yq '.' "${file}" | jq -cS .
+  fi
+}
+
 ITERATION=0
 LAST_SUFFIX=""
 LAST_COMMIT=""
@@ -22,10 +49,10 @@ while true; do
   echo "[Iter ${ITERATION}] Updating ${FOLDER} (secret.data = ${ITERATION})"
 
   # Add/update secret.data with the iteration number
-  yq -y ".secret.data = ${ITERATION}" "${VALUES_FILE}" > "${VALUES_FILE}.tmp" && mv "${VALUES_FILE}.tmp" "${VALUES_FILE}"
+  yq_set_secret_data "${ITERATION}" "${VALUES_FILE}"
 
   # Build expected JSON (sorted keys, compact) from the updated file
-  EXPECTED_JSON=$(yq '.' "${VALUES_FILE}" | jq -cS .)
+  EXPECTED_JSON=$(yq_to_json "${VALUES_FILE}")
 
   # Commit and push
   git add "${VALUES_FILE}"
