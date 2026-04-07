@@ -19,7 +19,7 @@ targetCustomizations:
             - running
             - scaledDown
       matchLabels:
-        fleet.cattle.io/cluster: sim-cluster-4
+        fleet.cattle.io/cluster: sim-cluster-8
     helm:
       valuesFiles:
         - values_helm.yaml
@@ -34,5 +34,5 @@ targetCustomizations:
         - key: fleet.cattle.io/cluster
           operator: NotIn
           values:
-            - sim-cluster-4
+            - sim-cluster-8
     doNotDeploy: true
