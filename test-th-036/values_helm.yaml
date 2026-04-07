@@ -1,0 +1,5 @@
+secret:
+  name: test-secret-file-036
+configmap-chart:
+  configmap:
+    name: test-cm-file-036
