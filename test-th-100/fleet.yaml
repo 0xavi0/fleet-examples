@@ -2,7 +2,7 @@ defaultNamespace: test-th-100
 helm:
   repo: https://github.com/0xavi0/fleet-examples/raw/refs/heads/helm-chart-deps/charts
   chart: secret-chart
-  version: 0.1.0
+  version: 0.2.0
   values:
     secret:
       name: test-secret-100
@@ -21,6 +21,8 @@ targetCustomizations:
       matchLabels:
         fleet.cattle.io/cluster: sim-cluster-4
     helm:
+      valuesFiles:
+        - values_helm.yaml
       values:
         secret:
           name: test-secret-100

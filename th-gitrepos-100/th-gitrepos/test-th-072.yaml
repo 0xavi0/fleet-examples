@@ -1,0 +1,14 @@
+kind: GitRepo
+apiVersion: fleet.cattle.io/v1alpha1
+metadata:
+  name: test-th-072
+  namespace: fleet-default
+spec:
+  repo: https://github.com/0xavi0/fleet-examples
+  branch: helm-chart-deps
+  disablePolling: true
+  paths:
+  - test-th-072
+  targets:
+  # Match everything
+  - clusterSelector: {}

@@ -2,7 +2,7 @@ defaultNamespace: test-th-051
 helm:
   repo: https://github.com/0xavi0/fleet-examples/raw/refs/heads/helm-chart-deps/charts
   chart: secret-chart
-  version: 0.1.0
+  version: 0.2.0
   values:
     secret:
       name: test-secret-051
@@ -19,8 +19,10 @@ targetCustomizations:
             - running
             - scaledDown
       matchLabels:
-        fleet.cattle.io/cluster: sim-cluster-2
+        fleet.cattle.io/cluster: sim-cluster-9
     helm:
+      valuesFiles:
+        - values_helm.yaml
       values:
         secret:
           name: test-secret-051
@@ -32,5 +34,5 @@ targetCustomizations:
         - key: fleet.cattle.io/cluster
           operator: NotIn
           values:
-            - sim-cluster-2
+            - sim-cluster-9
     doNotDeploy: true
