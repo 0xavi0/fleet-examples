@@ -7,7 +7,11 @@ C=${2:?Usage: $0 <number-of-folders> <number-of-clusters>}
 for i in $(seq 1 "$N"); do
   num=$(printf "%03d" "$i")
   dir="test-th-${num}"
-  cluster_num=$(( (RANDOM % C) + 1 ))
+  cluster_num1=$(( (RANDOM % C) + 1 ))
+  cluster_num2=$(( (RANDOM % C) + 1 ))
+  while [ "$C" -gt 1 ] && [ "$cluster_num2" -eq "$cluster_num1" ]; do
+    cluster_num2=$(( (RANDOM % C) + 1 ))
+  done
 
   mkdir -p "$dir"
 
@@ -40,8 +44,11 @@ targetCustomizations:
           values:
             - running
             - scaledDown
-      matchLabels:
-        fleet.cattle.io/cluster: sim-cluster-${cluster_num}
+        - key: fleet.cattle.io/cluster
+          operator: In
+          values:
+            - sim-cluster-${cluster_num1}
+            - sim-cluster-${cluster_num2}
     helm:
       valuesFiles:
         - values_helm.yaml
@@ -56,7 +63,8 @@ targetCustomizations:
         - key: fleet.cattle.io/cluster
           operator: NotIn
           values:
-            - sim-cluster-${cluster_num}
+            - sim-cluster-${cluster_num1}
+            - sim-cluster-${cluster_num2}
     doNotDeploy: true
 EOF
 
