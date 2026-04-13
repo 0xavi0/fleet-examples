@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-N=${1:?Usage: $0 <N>}
+N=${1:?Usage: $0 <N> [<clusters-per-bundle>]}
+T=${2:-2}   # number of downstream clusters targeted per bundle
 
 REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$REPO_DIR"
@@ -68,9 +69,8 @@ while true; do
   MAX_WAIT=300
   ELAPSED=0
   VERIFIED=0
-  NAMESPACE=""
-  STAGED_JSON=""
-  VALUES_JSON=""
+  NAMESPACES=""
+  NS_COUNT=0
 
   while [ "${ELAPSED}" -lt "${MAX_WAIT}" ]; do
     # Find all namespaces containing this secret that match the expected prefix
@@ -87,32 +87,38 @@ while true; do
     else
       NS_COUNT=$(echo "${NAMESPACES}" | grep -c '.')
     fi
-    echo "[Debug] NS_COUNT=${NS_COUNT}"
+    echo "[Debug] NS_COUNT=${NS_COUNT} (expected ${T})"
 
-    if [ "${NS_COUNT}" -gt 1 ]; then
-      echo "ERROR at iteration ${ITERATION}: found ${NS_COUNT} secrets named '${SECRET_NAME}' in namespaces matching 'cluster-fleet-default-sim-cluster-*' (expected exactly 1)"
+    if [ "${NS_COUNT}" -gt "${T}" ]; then
+      echo "ERROR at iteration ${ITERATION}: found ${NS_COUNT} secrets named '${SECRET_NAME}' in namespaces matching 'cluster-fleet-default-sim-cluster-*' (expected exactly ${T})"
       echo "Folder: ${FOLDER}"
       echo "Commit: ${LAST_COMMIT}"
       exit 1
     fi
 
-    if [ "${NS_COUNT}" -eq 1 ]; then
-      NAMESPACE=$(echo "${NAMESPACES}" | grep -v '^$')
+    if [ "${NS_COUNT}" -eq "${T}" ]; then
+      ALL_VERIFIED=1
+      while IFS= read -r NS; do
+        [ -z "${NS}" ] && continue
+        echo "[Debug] kubectl get secret '${SECRET_NAME}' -n '${NS}' -o jsonpath='{.data.stagedValues}'"
+        STAGED_RAW=$(kubectl get secret "${SECRET_NAME}" -n "${NS}" \
+          -o jsonpath='{.data.stagedValues}' 2>/dev/null | base64 -d || true)
+        echo "[Debug] kubectl get secret '${SECRET_NAME}' -n '${NS}' -o jsonpath='{.data.values}'"
+        VALUES_RAW=$(kubectl get secret "${SECRET_NAME}" -n "${NS}" \
+          -o jsonpath='{.data.values}' 2>/dev/null | base64 -d || true)
+        echo "[Debug] NS='${NS}' STAGED_RAW='${STAGED_RAW}' VALUES_RAW='${VALUES_RAW}'"
 
-      echo "[Debug] kubectl get secret '${SECRET_NAME}' -n '${NAMESPACE}' -o jsonpath='{.data.stagedValues}'"
-      STAGED_RAW=$(kubectl get secret "${SECRET_NAME}" -n "${NAMESPACE}" \
-        -o jsonpath='{.data.stagedValues}' 2>/dev/null | base64 -d || true)
-      echo "[Debug] kubectl get secret '${SECRET_NAME}' -n '${NAMESPACE}' -o jsonpath='{.data.values}'"
-      VALUES_RAW=$(kubectl get secret "${SECRET_NAME}" -n "${NAMESPACE}" \
-        -o jsonpath='{.data.values}' 2>/dev/null | base64 -d || true)
-      echo "[Debug] STAGED_RAW='${STAGED_RAW}'"
-      echo "[Debug] VALUES_RAW='${VALUES_RAW}'"
+        STAGED_JSON=$(echo "${STAGED_RAW}" | jq -cS . 2>/dev/null || true)
+        VALUES_JSON=$(echo "${VALUES_RAW}" | jq -cS . 2>/dev/null || true)
 
-      STAGED_JSON=$(echo "${STAGED_RAW}" | jq -cS . 2>/dev/null || true)
-      VALUES_JSON=$(echo "${VALUES_RAW}" | jq -cS . 2>/dev/null || true)
+        if [ "${STAGED_JSON}" != "${EXPECTED_JSON}" ] || [ "${VALUES_JSON}" != "${EXPECTED_JSON}" ]; then
+          ALL_VERIFIED=0
+          break
+        fi
+      done <<< "${NAMESPACES}"
 
-      if [ "${STAGED_JSON}" = "${EXPECTED_JSON}" ] && [ "${VALUES_JSON}" = "${EXPECTED_JSON}" ]; then
-        echo "[Iter ${ITERATION}] Secret data verified!"
+      if [ "${ALL_VERIFIED}" -eq 1 ]; then
+        echo "[Iter ${ITERATION}] Secret data verified in all ${T} namespace(s)!"
         VERIFIED=1
         break
       fi
@@ -128,9 +134,19 @@ while true; do
     echo "  Folder:        ${FOLDER}"
     echo "  Commit:        ${LAST_COMMIT}"
     echo "  Expected JSON: ${EXPECTED_JSON}"
-    if [ -n "${NAMESPACE}" ]; then
-      echo "  stagedValues:  ${STAGED_JSON:-<empty or invalid JSON>}"
-      echo "  values:        ${VALUES_JSON:-<empty or invalid JSON>}"
+    if [ "${NS_COUNT}" -gt 0 ]; then
+      echo "  Found ${NS_COUNT}/${T} namespace(s): $(echo "${NAMESPACES}" | tr '\n' ' ')"
+      while IFS= read -r NS; do
+        [ -z "${NS}" ] && continue
+        STAGED_RAW=$(kubectl get secret "${SECRET_NAME}" -n "${NS}" \
+          -o jsonpath='{.data.stagedValues}' 2>/dev/null | base64 -d || true)
+        VALUES_RAW=$(kubectl get secret "${SECRET_NAME}" -n "${NS}" \
+          -o jsonpath='{.data.values}' 2>/dev/null | base64 -d || true)
+        STAGED_JSON=$(echo "${STAGED_RAW}" | jq -cS . 2>/dev/null || true)
+        VALUES_JSON=$(echo "${VALUES_RAW}" | jq -cS . 2>/dev/null || true)
+        echo "  [${NS}] stagedValues: ${STAGED_JSON:-<empty or invalid JSON>}"
+        echo "  [${NS}] values:       ${VALUES_JSON:-<empty or invalid JSON>}"
+      done <<< "${NAMESPACES}"
     else
       echo "  Secret '${SECRET_NAME}' not found in any namespace matching 'cluster-fleet-default-sim-cluster-*'"
     fi
