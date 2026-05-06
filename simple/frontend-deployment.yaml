@@ -7,7 +7,7 @@ spec:
     matchLabels:
       app: guestbook
       tier: frontend
-  replicas: 2
+  replicas: 5
   template:
     metadata:
       labels:
