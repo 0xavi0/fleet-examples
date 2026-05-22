@@ -21,8 +21,7 @@ targetCustomizations:
         - key: fleet.cattle.io/cluster
           operator: In
           values:
-            - sim-cluster-9
-            - sim-cluster-4
+            - sim-cluster-6
     helm:
       valuesFiles:
         - values_helm.yaml
@@ -37,6 +36,5 @@ targetCustomizations:
         - key: fleet.cattle.io/cluster
           operator: NotIn
           values:
-            - sim-cluster-9
-            - sim-cluster-4
+            - sim-cluster-6
     doNotDeploy: true

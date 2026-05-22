@@ -48,7 +48,6 @@ targetCustomizations:
           operator: In
           values:
             - sim-cluster-${cluster_num1}
-            - sim-cluster-${cluster_num2}
     helm:
       valuesFiles:
         - values_helm.yaml
@@ -64,7 +63,6 @@ targetCustomizations:
           operator: NotIn
           values:
             - sim-cluster-${cluster_num1}
-            - sim-cluster-${cluster_num2}
     doNotDeploy: true
 EOF
 
