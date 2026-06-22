@@ -1,0 +1,4 @@
+apiVersion: v2
+name: issue-4150
+description: Repro chart for rancher/fleet#4150 (null value shows ConfigMap as modified)
+version: 0.1.0

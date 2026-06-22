@@ -1,0 +1,11 @@
+# When .Values.extra is unset/null, `extra` below renders as the literal `null`.
+# That explicit null in the desired manifest is what triggers issue #4150:
+# Helm removes the key from the live object on upgrade, but Fleet's drift
+# detection coerces the null to "" and reports the bundle as modified.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: test-4150
+data:
+  foo: "bar"
+  extra: {{ .Values.extra | toYaml }}
