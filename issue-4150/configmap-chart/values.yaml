@@ -1,4 +1,4 @@
 # Step 1 (initial deploy): extra has a real value.
 # Step 2 (the update that triggers the bug): change this to `extra: null`
 #         (or delete the line entirely), commit and push.
-extra: "hello"
+extra: null
