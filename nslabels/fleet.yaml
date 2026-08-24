@@ -1,0 +1,13 @@
+defaultNamespace: nslabel-demo
+
+targetCustomizations:
+  - name: prod
+    clusterSelector:
+      matchLabels:
+        env: prod
+    namespaceLabels:
+      tier: critical
+  - name: dev
+    clusterSelector:
+      matchLabels:
+        env: dev
